@@ -836,10 +836,10 @@ esbuild@^0.17.4:
     "@esbuild/win32-ia32" "0.17.4"
     "@esbuild/win32-x64" "0.17.4"
 
-etchart@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/etchart/-/etchart-1.0.3.tgz#8a64ea1cd6010807f6c9682e1352db75d82f6f12"
-  integrity sha512-Ot/JqVJeSA33M0ntU73/2/+6iuBayn3md9vCGGiDPdFwKtpXkeheVZ1CNkSibEEhwjIOEoEO6fi5/Zi0+ufqfw==
+etchart@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/etchart/-/etchart-1.0.6.tgz#133a3b5a0937cadec6c0d2671231231cf5483749"
+  integrity sha512-3ZY6aLFxir4XYWHm/kXSa6QjflUqIAIkBn1KRez0QoK2CPh1KpSk9FfkbZ1M7djXfLkAdXztl09XirUiVU5SEQ==
   dependencies:
     "@visx/axis" "^3.0.0"
     "@visx/curve" "^3.0.0"

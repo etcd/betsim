@@ -7,6 +7,7 @@
   "scripts": {
     "build": "esbuild source/lib/*.ts --bundle --outdir=build --format=esm --minify",
     "simulate": "ts-node source/index.ts",
+    "dev": "vite",
     "typecheck": "tsc --noEmit --listFiles",
     "clean:build": "rimraf build",
     "clean:node_modules": "rimraf node_modules"
@@ -23,6 +24,6 @@
     "vite": "^4.0.4"
   },
   "dependencies": {
-    "etchart": "^1.0.3"
+    "etchart": "^1.0.6"
   }
 }

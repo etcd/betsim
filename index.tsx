@@ -1,6 +1,6 @@
 import React from "react";
 import * as ReactDOM from "react-dom/client";
-import { Chart as ReactLineChart } from "etchart/source/lib/ReactLineChart";
+import { Chart as ReactLineChart } from "etchart/build/lib/ReactLineChart";
 
 import { Facts, simulate } from "./source/lib/Simulation";
 import { EdgeStrategy } from "./source/lib/strategies/Edge";
