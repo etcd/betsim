@@ -29,15 +29,15 @@ interface Facts {
 export const simulate = ({
   name,
   nPoints,
-  startingBalance = 1,
   marketInefficiency,
   betFn,
+  startingBalance = 1,
 }: {
   name: string;
   nPoints: number;
-  startingBalance: number;
   marketInefficiency: number;
   betFn: (facts: Facts) => number;
+  startingBalance?: number;
 }) => {
   // get points
   const points = Array.from({ length: nPoints }, () =>
