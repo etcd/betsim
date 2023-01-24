@@ -4,6 +4,12 @@
   "main": "index.js",
   "repository": "git@github.com:etcd/betsim.git",
   "license": "MIT",
+  "scripts": {
+    "build": "esbuild source/lib/*.ts --bundle --outdir=build --format=esm --minify",
+    "typecheck": "tsc --noEmit --listFiles",
+    "clean:build": "rimraf build",
+    "clean:node_modules": "rimraf node_modules"
+  },
   "devDependencies": {
     "esbuild": "^0.17.4",
     "rimraf": "^4.1.1",
