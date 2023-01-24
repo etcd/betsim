@@ -19,7 +19,7 @@ const calculateAmountWon = (point: Point, outcome: boolean, bet: number) => {
   return outcome ? bet : -bet;
 };
 
-/** Facts given at time of bet */
+/** Facts known at time of bet */
 interface Facts {
   point: Point;
   balance: number;
@@ -78,7 +78,7 @@ export const simulate = ({
   }
 
   // prepare simulation data to output
-  const simData = range(bets.length).map((i) => ({
+  const simulationData = range(bets.length).map((i) => ({
     x: i,
     startingBalance: startingBalances[i],
     odds: ratioToOdds(...points[i]),
@@ -92,5 +92,5 @@ export const simulate = ({
     ...points[i],
   }));
 
-  return simData;
+  return simulationData;
 };
