@@ -26,7 +26,7 @@ interface Facts {
   realProbability: number;
 }
 
-const makeSimulation = ({
+export const simulate = ({
   name,
   nPoints,
   startingBalance = 1,
