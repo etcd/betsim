@@ -1,8 +1,47 @@
 import React from "react";
 import * as ReactDOM from "react-dom/client";
 
-import testSimData from "./source/constants/testSimData.json";
 import { Chart as ReactLineChart } from "./source/lib/ReactLineChart";
+import { Facts, simulate } from "./source/lib/Simulation";
+import { EdgeStrategy } from "./source/lib/strategies/Edge";
+import { KellyStrategy } from "./source/lib/strategies/Kelly";
+import { RandomStrategy } from "./source/lib/strategies/Random";
+import { RealProbabilityStrategy } from "./source/lib/strategies/RealProbability";
+import { ScaledRandomStrategy } from "./source/lib/strategies/ScaledRandom";
+
+const simulationData = (() => {
+  const N_POINTS = 2000;
+
+  const makeSimWithBetFn = (betFn: (facts: Facts) => number, name: string) =>
+    simulate({
+      name,
+      nPoints: N_POINTS,
+      marketInefficiency: 0.2,
+      betFn,
+    });
+
+  return [
+    ...makeSimWithBetFn(KellyStrategy(1), "kelly"),
+    ...makeSimWithBetFn(KellyStrategy(0.5), "kelly(0.5)"),
+    ...makeSimWithBetFn(KellyStrategy(0.3), "kelly(0.3)"),
+    ...makeSimWithBetFn(
+      KellyStrategy(1, (p) => -(0.5 ** p) + 1),
+      "kelly-ra-max"
+    ),
+    ...makeSimWithBetFn(
+      KellyStrategy(1, (p) => -(0.5 ** (p + 1)) + 1),
+      "kelly-ra-med"
+    ),
+    ...makeSimWithBetFn(
+      KellyStrategy(1, (p) => -(0.5 ** (p + 2)) + 1),
+      "kelly-ra-low"
+    ),
+    ...makeSimWithBetFn(RealProbabilityStrategy(0.1), "real probability"),
+    ...makeSimWithBetFn(RandomStrategy(0.01), "random"),
+    ...makeSimWithBetFn(ScaledRandomStrategy(0.01), "scaled random"),
+    ...makeSimWithBetFn(EdgeStrategy(1), "edge"),
+  ];
+})();
 
 const rootElement = document.getElementById("root");
 
@@ -18,7 +57,7 @@ rootElement &&
         <div className="m-10 border">
           <ReactLineChart
             // data
-            data={testSimData}
+            data={simulationData}
             getX={(dp) => dp.x}
             getY={(dp) => dp.startingBalance}
             getZ={(dp) => dp.name}
