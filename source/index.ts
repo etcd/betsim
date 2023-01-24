@@ -1,4 +1,5 @@
 import { Facts, simulate } from "./lib/Simulation";
+import { EdgeStrategy } from "./lib/strategies/Edge";
 import { KellyStrategy } from "./lib/strategies/Kelly";
 import { RandomStrategy } from "./lib/strategies/Random";
 import { RealProbabilityStrategy } from "./lib/strategies/RealProbability";
@@ -33,7 +34,7 @@ const simulationData = [
   ...makeSimWithBetFn(RealProbabilityStrategy(0.1), "real probability"),
   ...makeSimWithBetFn(RandomStrategy(0.01), "random"),
   ...makeSimWithBetFn(ScaledRandomStrategy(0.01), "scaled random"),
-  //   ...makeSimWithBetFn(EDGE_STRAT(1), "edge"),
+  ...makeSimWithBetFn(EdgeStrategy(1), "edge"),
 ];
 
 console.log(simulationData.length);
