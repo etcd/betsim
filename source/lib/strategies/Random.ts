@@ -7,5 +7,5 @@
  * in inefficient markets where there are massive discrepancies between
  * real and implied probabilities, this strategy can actually perform well.
  */
-export const RANDOM_STRATEGY = (scale: number) => () =>
+export const RandomStrategy = (scale: number) => () =>
   (Math.random() - 0.5) * 2 * scale;

@@ -1,13 +1,20 @@
-import { simulate } from "./lib/Simulation";
-import { RANDOM_STRATEGY } from "./lib/strategies/Random";
+import { Facts, simulate } from "./lib/Simulation";
+import { RandomStrategy } from "./lib/strategies/Random";
+import { ScaledRandomStrategy } from "./lib/strategies/ScaledRandom";
 
 const N_POINTS = 2000;
 
-const simulationData = simulate({
-  name: "random",
-  nPoints: N_POINTS,
-  marketInefficiency: 0.2,
-  betFn: RANDOM_STRATEGY(1),
-});
+const makeSimWithBetFn = (betFn: (facts: Facts) => number, name: string) =>
+  simulate({
+    name,
+    nPoints: N_POINTS,
+    marketInefficiency: 0.2,
+    betFn,
+  });
+
+const simulationData = [
+  ...makeSimWithBetFn(RandomStrategy(0.01), "random"),
+  ...makeSimWithBetFn(ScaledRandomStrategy(0.01), "scaled random"),
+];
 
 console.log(simulationData.length);
