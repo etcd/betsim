@@ -1,0 +1,7 @@
+{
+  "name": "betsim",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:etcd/betsim.git",
+  "license": "MIT"
+}
