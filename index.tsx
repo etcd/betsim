@@ -1,7 +1,7 @@
 import React from "react";
 import * as ReactDOM from "react-dom/client";
+import { Chart as ReactLineChart } from "etchart/source/lib/ReactLineChart";
 
-import { Chart as ReactLineChart } from "./source/lib/ReactLineChart";
 import { Facts, simulate } from "./source/lib/Simulation";
 import { EdgeStrategy } from "./source/lib/strategies/Edge";
 import { KellyStrategy } from "./source/lib/strategies/Kelly";
@@ -71,7 +71,7 @@ rootElement &&
         <div className="m-10 border">
           <ReactLineChart
             // data
-            data={testSimData}
+            data={simulationData}
             getX={(dp) => dp.realProbability - oddsToImpliedP(dp.odds)}
             getY={(dp) => dp.amountWon / dp.startingBalance}
             getZ={(dp) => dp.name}
