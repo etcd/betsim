@@ -20,7 +20,7 @@ const calculateAmountWon = (point: Point, outcome: boolean, bet: number) => {
 };
 
 /** Facts known at time of bet */
-interface Facts {
+export interface Facts {
   point: Point;
   balance: number;
   realProbability: number;
