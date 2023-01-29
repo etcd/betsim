@@ -9,13 +9,13 @@ import { RandomStrategy } from "./source/lib/strategies/Random";
 import { RealProbabilityStrategy } from "./source/lib/strategies/RealProbability";
 import { ScaledRandomStrategy } from "./source/lib/strategies/ScaledRandom";
 
-const simulationData = (() => {
-  const N_POINTS = 2000;
+const N_POINTS = 2000;
 
+const simulationData = (nPoints: number) => {
   const makeSimWithBetFn = (betFn: (facts: Facts) => number, name: string) =>
     simulate({
       name,
-      nPoints: N_POINTS,
+      nPoints,
       marketInefficiency: 0.2,
       betFn,
     });
@@ -41,14 +41,14 @@ const simulationData = (() => {
     ...makeSimWithBetFn(ScaledRandomStrategy(0.01), "scaled random"),
     ...makeSimWithBetFn(EdgeStrategy(1), "edge"),
   ];
-})();
+};
 
 const rootElement = document.getElementById("root");
 
 /** Given odds, calculate probability of a win if you bet `yes` */
 const oddsToImpliedP = (odds: number) => 1 / odds;
 
-const N_POINTS = 2000;
+const simData = simulationData(N_POINTS);
 
 rootElement &&
   ReactDOM.createRoot(rootElement).render(
@@ -57,7 +57,7 @@ rootElement &&
         <div className="m-10 border">
           <ReactLineChart
             // data
-            data={simulationData}
+            data={simData}
             getX={(dp) => dp.x}
             getY={(dp) => dp.startingBalance}
             getZ={(dp) => dp.name}
@@ -71,7 +71,7 @@ rootElement &&
         <div className="m-10 border">
           <ReactLineChart
             // data
-            data={simulationData}
+            data={simData}
             getX={(dp) => dp.realProbability - oddsToImpliedP(dp.odds)}
             getY={(dp) => dp.amountWon / dp.startingBalance}
             getZ={(dp) => dp.name}
@@ -79,9 +79,10 @@ rootElement &&
             yAxisLabel="Scaled amount won"
             // display
             height={500}
-            pointOpacity={1000 / N_POINTS}
+            pointOpacity={10000 / N_POINTS}
             showLines={false}
             showPoints={true}
+            pointRadius={0.5}
             yDomain={[-0.2, 0.2]}
             xAxisLocation={0}
           />
