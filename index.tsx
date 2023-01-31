@@ -8,15 +8,23 @@ import { KellyStrategy } from "./source/lib/strategies/Kelly";
 import { RandomStrategy } from "./source/lib/strategies/Random";
 import { RealProbabilityStrategy } from "./source/lib/strategies/RealProbability";
 import { ScaledRandomStrategy } from "./source/lib/strategies/ScaledRandom";
+import { makeBinaryTrial } from "./source/lib/Trial";
+import { offsetProbability } from "./source/lib/ProbabilityOffset";
 
 const N_TRIALS = 1000;
 
 const makeSimulationData = (nTrials: number) => {
+  const marketInefficiency = 0.2;
+
+  const trials = Array.from({ length: nTrials }, () =>
+    makeBinaryTrial((n) => offsetProbability(n, marketInefficiency))
+  );
+
   const makeSimWithBetFn = (betFn: (facts: Facts) => number, name: string) =>
     simulate({
       name,
-      nTrials,
-      marketInefficiency: 0.2,
+      trials,
+      marketInefficiency,
       betFn,
     });
 

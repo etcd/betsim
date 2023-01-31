@@ -6,7 +6,7 @@ import {
 } from "../utilities/Probability";
 
 import { offsetProbability } from "./ProbabilityOffset";
-import { BinaryTrialBook, makeBinaryTrial } from "./Trial";
+import { BinaryTrial, BinaryTrialBook, makeBinaryTrial } from "./Trial";
 
 /** Calculates the amount won from a bet given relevant factors from the scenario */
 const calculateAmountWon = (
@@ -35,32 +35,28 @@ export interface Facts {
 /** Simulates a sequence of bet scenarios and outcomes */
 export const simulate = ({
   name,
-  nTrials,
+  trials,
   marketInefficiency,
   betFn,
   startingBalance = 1,
 }: {
   name: string;
-  nTrials: number;
+  trials: BinaryTrial[];
   marketInefficiency: number;
   betFn: (facts: Facts) => number;
   startingBalance?: number;
 }) => {
-  const trials = Array.from({ length: nTrials }, () =>
-    makeBinaryTrial((n) => offsetProbability(n, marketInefficiency))
-  );
-
   const trialBooks = trials.map((t) => t.book);
   const trialProbabilities = trials.map((t) => t.probability);
   const trialOutcomes = trials.map((t) => t.outcome);
 
   // simulate
-  const bets: number[] = Array.from({ length: nTrials });
-  const amountWon: number[] = Array.from({ length: nTrials });
-  const startingBalances: number[] = Array.from({ length: nTrials + 1 });
+  const bets: number[] = Array.from({ length: trials.length });
+  const amountWon: number[] = Array.from({ length: trials.length });
+  const startingBalances: number[] = Array.from({ length: trials.length + 1 });
   startingBalances[0] = startingBalance;
 
-  for (let i = 0; i < nTrials; i++) {
+  for (let i = 0; i < trials.length; i++) {
     if (startingBalances[i] <= 0) {
       bets.length = i;
       amountWon.length = i;
