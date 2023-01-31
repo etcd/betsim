@@ -49,8 +49,8 @@ const getKellyBetFraction = (
  */
 export const KellyStrategy =
   (scale: number, riskAversionFn?: (probability: number) => number) =>
-  ({ bets, balance, realProbability }: Facts) => {
-    const marketOdds = ratioToOdds(...bets);
+  ({ book, balance, realProbability }: Facts) => {
+    const marketOdds = ratioToOdds(...book);
     const betFraction = getKellyBetFraction(
       marketOdds,
       realProbability - oddsToImpliedP(marketOdds),

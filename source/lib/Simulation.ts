@@ -4,18 +4,17 @@ import {
   ratioToImpliedP,
   ratioToOdds,
 } from "../utilities/Probability";
-import { makePoint } from "./Point";
 
 import { offsetProbability } from "./ProbabilityOffset";
-import { BinaryTrialBets, makeBinaryTrial } from "./Trial";
+import { BinaryTrialBook, makeBinaryTrial } from "./Trial";
 
 /** Calculates the amount won from a bet given relevant factors from the scenario */
 const calculateAmountWon = (
-  point: BinaryTrialBets,
+  book: BinaryTrialBook,
   outcome: boolean,
   bet: number
 ) => {
-  const yesOdds = ratioToOdds(...point);
+  const yesOdds = ratioToOdds(...book);
   const noOdds = invertOdds(yesOdds);
 
   // bet `yes` and win
@@ -28,7 +27,7 @@ const calculateAmountWon = (
 
 /** Facts known at time of bet */
 export interface Facts {
-  bets: BinaryTrialBets;
+  book: BinaryTrialBook;
   balance: number;
   realProbability: number;
 }
@@ -51,7 +50,7 @@ export const simulate = ({
     makeBinaryTrial((n) => offsetProbability(n, marketInefficiency))
   );
 
-  const trialBets = trials.map((t) => t.bets);
+  const trialBooks = trials.map((t) => t.book);
   const trialProbabilities = trials.map((t) => t.probability);
   const trialOutcomes = trials.map((t) => t.outcome);
 
@@ -70,11 +69,11 @@ export const simulate = ({
     }
 
     bets[i] = betFn({
-      bets: trialBets[i],
+      book: trialBooks[i],
       balance: startingBalances[i],
       realProbability: trialProbabilities[i],
     });
-    amountWon[i] = calculateAmountWon(trialBets[i], trialOutcomes[i], bets[i]);
+    amountWon[i] = calculateAmountWon(trialBooks[i], trialOutcomes[i], bets[i]);
     startingBalances[i + 1] = startingBalances[i] + amountWon[i];
   }
 
@@ -82,15 +81,15 @@ export const simulate = ({
   const simulationData = range(bets.length).map((i) => ({
     x: i,
     startingBalance: startingBalances[i],
-    odds: ratioToOdds(...trialBets[i]),
+    odds: ratioToOdds(...trialBooks[i]),
     outcome: trialOutcomes[i],
-    impliedP: ratioToImpliedP(...trialBets[i]),
+    impliedP: ratioToImpliedP(...trialBooks[i]),
     realProbability: trialProbabilities[i],
     bet: bets[i],
     betFraction: bets[i] / startingBalances[i],
     amountWon: amountWon[i],
     name,
-    ...trialBets[i],
+    ...trialBooks[i],
   }));
 
   return simulationData;

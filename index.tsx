@@ -16,7 +16,7 @@ const makeSimulationData = (nPoints: number) => {
     simulate({
       name,
       nPoints,
-      marketInefficiency: 0.1,
+      marketInefficiency: 0.2,
       betFn,
     });
 
