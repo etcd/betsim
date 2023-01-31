@@ -35,18 +35,18 @@ export interface Facts {
 /** Simulates a sequence of bet scenarios and outcomes */
 export const simulate = ({
   name,
-  nPoints,
+  nTrials,
   marketInefficiency,
   betFn,
   startingBalance = 1,
 }: {
   name: string;
-  nPoints: number;
+  nTrials: number;
   marketInefficiency: number;
   betFn: (facts: Facts) => number;
   startingBalance?: number;
 }) => {
-  const trials = Array.from({ length: nPoints }, () =>
+  const trials = Array.from({ length: nTrials }, () =>
     makeBinaryTrial((n) => offsetProbability(n, marketInefficiency))
   );
 
@@ -55,12 +55,12 @@ export const simulate = ({
   const trialOutcomes = trials.map((t) => t.outcome);
 
   // simulate
-  const bets: number[] = Array.from({ length: nPoints });
-  const amountWon: number[] = Array.from({ length: nPoints });
-  const startingBalances: number[] = Array.from({ length: nPoints + 1 });
+  const bets: number[] = Array.from({ length: nTrials });
+  const amountWon: number[] = Array.from({ length: nTrials });
+  const startingBalances: number[] = Array.from({ length: nTrials + 1 });
   startingBalances[0] = startingBalance;
 
-  for (let i = 0; i < nPoints; i++) {
+  for (let i = 0; i < nTrials; i++) {
     if (startingBalances[i] <= 0) {
       bets.length = i;
       amountWon.length = i;

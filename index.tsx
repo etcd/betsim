@@ -9,13 +9,13 @@ import { RandomStrategy } from "./source/lib/strategies/Random";
 import { RealProbabilityStrategy } from "./source/lib/strategies/RealProbability";
 import { ScaledRandomStrategy } from "./source/lib/strategies/ScaledRandom";
 
-const N_POINTS = 1000;
+const N_TRIALS = 1000;
 
-const makeSimulationData = (nPoints: number) => {
+const makeSimulationData = (nTrials: number) => {
   const makeSimWithBetFn = (betFn: (facts: Facts) => number, name: string) =>
     simulate({
       name,
-      nPoints,
+      nTrials,
       marketInefficiency: 0.2,
       betFn,
     });
@@ -48,7 +48,7 @@ const rootElement = document.getElementById("root");
 /** Given odds, calculate probability of a win if you bet `yes` */
 const oddsToImpliedP = (odds: number) => 1 / odds;
 
-const simData = makeSimulationData(N_POINTS);
+const simData = makeSimulationData(N_TRIALS);
 
 rootElement &&
   ReactDOM.createRoot(rootElement).render(
@@ -81,7 +81,7 @@ rootElement &&
             yAxisLabel="Outcome"
             // display
             height={150}
-            pointOpacity={100 / N_POINTS}
+            pointOpacity={100 / N_TRIALS}
             showLines={false}
             showPoints={true}
             pointRadius={1}
@@ -101,7 +101,7 @@ rootElement &&
             yAxisLabel="Outcome"
             // display
             height={150}
-            pointOpacity={100 / N_POINTS}
+            pointOpacity={100 / N_TRIALS}
             showLines={false}
             showPoints={true}
             pointRadius={1}
@@ -122,7 +122,7 @@ rootElement &&
             yAxisLabel="Scaled amount won"
             // display
             height={500}
-            pointOpacity={10000 / N_POINTS}
+            pointOpacity={10000 / N_TRIALS}
             showLines={false}
             showPoints={true}
             pointRadius={0.5}
