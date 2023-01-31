@@ -9,7 +9,7 @@ import { RandomStrategy } from "./source/lib/strategies/Random";
 import { RealProbabilityStrategy } from "./source/lib/strategies/RealProbability";
 import { ScaledRandomStrategy } from "./source/lib/strategies/ScaledRandom";
 
-const N_POINTS = 2000;
+const N_POINTS = 1000;
 
 const makeSimulationData = (nPoints: number) => {
   const makeSimWithBetFn = (betFn: (facts: Facts) => number, name: string) =>
