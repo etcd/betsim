@@ -42,9 +42,7 @@ export const simulate = ({
   startingBalance?: number;
 }) => {
   // get points
-  const points = Array.from({ length: nPoints }, () =>
-    makePoint(marketInefficiency)
-  );
+  const points = Array.from({ length: nPoints }, () => makePoint());
 
   // get real probabilities given market inefficiency
   const realProbabilities: number[] = points.map((point) => {
