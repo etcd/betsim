@@ -133,7 +133,7 @@ rootElement &&
             pointOpacity={10000 / N_TRIALS}
             showLines={false}
             showPoints={true}
-            pointRadius={0.5}
+            pointRadius={1}
             yDomain={[-0.2, 0.2]}
             xAxisLocation={0}
           />
