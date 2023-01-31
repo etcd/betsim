@@ -11,12 +11,12 @@ import { ScaledRandomStrategy } from "./source/lib/strategies/ScaledRandom";
 
 const N_POINTS = 2000;
 
-const simulationData = (nPoints: number) => {
+const makeSimulationData = (nPoints: number) => {
   const makeSimWithBetFn = (betFn: (facts: Facts) => number, name: string) =>
     simulate({
       name,
       nPoints,
-      marketInefficiency: 0.2,
+      marketInefficiency: 0.1,
       betFn,
     });
 
@@ -48,12 +48,13 @@ const rootElement = document.getElementById("root");
 /** Given odds, calculate probability of a win if you bet `yes` */
 const oddsToImpliedP = (odds: number) => 1 / odds;
 
-const simData = simulationData(N_POINTS);
+const simData = makeSimulationData(N_POINTS);
 
 rootElement &&
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
       <div className="m-28">
+        {/* line chart */}
         <div className="m-10 border">
           <ReactLineChart
             // data
@@ -68,6 +69,48 @@ rootElement &&
             height={300}
           />
         </div>
+
+        {/* implied probability */}
+        <div className="m-10 border">
+          <ReactLineChart
+            // data
+            data={simData}
+            getX={(dp) => oddsToImpliedP(dp.odds)}
+            getY={(dp) => (dp.outcome ? 1 : -1)}
+            xAxisLabel="Implied probability"
+            yAxisLabel="Outcome"
+            // display
+            height={150}
+            pointOpacity={100 / N_POINTS}
+            showLines={false}
+            showPoints={true}
+            pointRadius={1}
+            yDomain={[-2, 2]}
+            xAxisLocation={0}
+          />
+        </div>
+
+        {/* real probability */}
+        <div className="m-10 border">
+          <ReactLineChart
+            // data
+            data={simData}
+            getX={(dp) => dp.realProbability}
+            getY={(dp) => (dp.outcome ? 1 : -1)}
+            xAxisLabel="Real probability"
+            yAxisLabel="Outcome"
+            // display
+            height={150}
+            pointOpacity={100 / N_POINTS}
+            showLines={false}
+            showPoints={true}
+            pointRadius={1}
+            yDomain={[-2, 2]}
+            xAxisLocation={0}
+          />
+        </div>
+
+        {/* point chart */}
         <div className="m-10 border">
           <ReactLineChart
             // data

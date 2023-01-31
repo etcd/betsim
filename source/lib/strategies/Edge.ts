@@ -12,7 +12,7 @@ import { Facts } from "../Simulation";
  */
 export const EdgeStrategy =
   (scale: number) =>
-  ({ point, balance, realProbability }: Facts) => {
-    const edge = realProbability - ratioToImpliedP(...point);
+  ({ bets, balance, realProbability }: Facts) => {
+    const edge = realProbability - ratioToImpliedP(...bets);
     return edge * balance * scale;
   };

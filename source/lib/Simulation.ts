@@ -4,11 +4,17 @@ import {
   ratioToImpliedP,
   ratioToOdds,
 } from "../utilities/Probability";
-import { makePoint, Point } from "./Point";
+import { makePoint } from "./Point";
+
 import { offsetProbability } from "./ProbabilityOffset";
+import { BinaryTrialBets, makeBinaryTrial } from "./Trial";
 
 /** Calculates the amount won from a bet given relevant factors from the scenario */
-const calculateAmountWon = (point: Point, outcome: boolean, bet: number) => {
+const calculateAmountWon = (
+  point: BinaryTrialBets,
+  outcome: boolean,
+  bet: number
+) => {
   const yesOdds = ratioToOdds(...point);
   const noOdds = invertOdds(yesOdds);
 
@@ -22,7 +28,7 @@ const calculateAmountWon = (point: Point, outcome: boolean, bet: number) => {
 
 /** Facts known at time of bet */
 export interface Facts {
-  point: Point;
+  bets: BinaryTrialBets;
   balance: number;
   realProbability: number;
 }
@@ -41,18 +47,13 @@ export const simulate = ({
   betFn: (facts: Facts) => number;
   startingBalance?: number;
 }) => {
-  // get points
-  const points = Array.from({ length: nPoints }, () => makePoint());
-
-  // get real probabilities given market inefficiency
-  const realProbabilities: number[] = points.map((point) => {
-    return offsetProbability(ratioToImpliedP(...point), marketInefficiency);
-  });
-
-  // collapse probabilities to outcomes
-  const outcomes: boolean[] = points.map(
-    (_, i) => Math.random() < realProbabilities[i]
+  const trials = Array.from({ length: nPoints }, () =>
+    makeBinaryTrial((n) => offsetProbability(n, marketInefficiency))
   );
+
+  const trialBets = trials.map((t) => t.bets);
+  const trialProbabilities = trials.map((t) => t.probability);
+  const trialOutcomes = trials.map((t) => t.outcome);
 
   // simulate
   const bets: number[] = Array.from({ length: nPoints });
@@ -69,11 +70,11 @@ export const simulate = ({
     }
 
     bets[i] = betFn({
-      point: points[i],
+      bets: trialBets[i],
       balance: startingBalances[i],
-      realProbability: realProbabilities[i],
+      realProbability: trialProbabilities[i],
     });
-    amountWon[i] = calculateAmountWon(points[i], outcomes[i], bets[i]);
+    amountWon[i] = calculateAmountWon(trialBets[i], trialOutcomes[i], bets[i]);
     startingBalances[i + 1] = startingBalances[i] + amountWon[i];
   }
 
@@ -81,15 +82,15 @@ export const simulate = ({
   const simulationData = range(bets.length).map((i) => ({
     x: i,
     startingBalance: startingBalances[i],
-    odds: ratioToOdds(...points[i]),
-    outcome: outcomes[i],
-    impliedP: ratioToImpliedP(...points[i]),
-    realProbability: realProbabilities[i],
+    odds: ratioToOdds(...trialBets[i]),
+    outcome: trialOutcomes[i],
+    impliedP: ratioToImpliedP(...trialBets[i]),
+    realProbability: trialProbabilities[i],
     bet: bets[i],
     betFraction: bets[i] / startingBalances[i],
     amountWon: amountWon[i],
     name,
-    ...points[i],
+    ...trialBets[i],
   }));
 
   return simulationData;
