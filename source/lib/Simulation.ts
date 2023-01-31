@@ -7,6 +7,7 @@ import {
 import { makePoint, Point } from "./Point";
 import { offsetProbability } from "./ProbabilityOffset";
 
+/** Calculates the amount won from a bet given relevant factors from the scenario */
 const calculateAmountWon = (point: Point, outcome: boolean, bet: number) => {
   const yesOdds = ratioToOdds(...point);
   const noOdds = invertOdds(yesOdds);
@@ -26,6 +27,7 @@ export interface Facts {
   realProbability: number;
 }
 
+/** Simulates a sequence of bet scenarios and outcomes */
 export const simulate = ({
   name,
   nPoints,
