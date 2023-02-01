@@ -75,6 +75,8 @@ rootElement &&
             yAxisLabel="y axis"
             // display
             height={400}
+            showEndpointLabels={true}
+            margins={{ right: 85 }}
           />
         </div>
 
