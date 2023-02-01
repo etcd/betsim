@@ -14,7 +14,7 @@ import { offsetProbability } from "./source/lib/ProbabilityOffset";
 const N_TRIALS = 2000;
 
 const makeSimulationData = (nTrials: number) => {
-  const marketInefficiency = 0.2;
+  const marketInefficiency = 0.25;
 
   const trials = Array.from({ length: nTrials }, () =>
     makeBinaryTrial((n) => offsetProbability(n, marketInefficiency))
