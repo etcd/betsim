@@ -11,7 +11,7 @@ import { ScaledRandomStrategy } from "./source/lib/strategies/ScaledRandom";
 import { makeBinaryTrial } from "./source/lib/Trial";
 import { offsetProbability } from "./source/lib/ProbabilityOffset";
 
-const N_TRIALS = 1000;
+const N_TRIALS = 2000;
 
 const makeSimulationData = (nTrials: number) => {
   const marketInefficiency = 0.2;
@@ -74,48 +74,52 @@ rootElement &&
             xAxisLabel="x axis"
             yAxisLabel="y axis"
             // display
-            height={300}
+            height={400}
           />
         </div>
 
-        {/* implied probability */}
-        <div className="m-10 border">
-          <ReactLineChart
-            // data
-            data={simData}
-            getX={(dp) => oddsToImpliedP(dp.odds)}
-            getY={(dp) => (dp.outcome ? 1 : -1)}
-            xAxisLabel="Implied probability"
-            yAxisLabel="Outcome"
-            // display
-            height={150}
-            pointOpacity={100 / N_TRIALS}
-            showLines={false}
-            showPoints={true}
-            pointRadius={1}
-            yDomain={[-2, 2]}
-            xAxisLocation={0}
-          />
-        </div>
+        <div className="grid grid-flow-col grid-cols-12">
+          {/* implied probability */}
+          <div className="m-10 border col-span-6">
+            <ReactLineChart
+              // data
+              data={simData}
+              getX={(dp) => oddsToImpliedP(dp.odds)}
+              getY={(dp) => (dp.outcome ? 1 : -1)}
+              xAxisLabel="Implied probability"
+              yAxisLabel="Outcome"
+              // display
+              height={150}
+              width={400}
+              pointOpacity={10000 / N_TRIALS}
+              showLines={false}
+              showPoints={true}
+              pointRadius={1}
+              yDomain={[-2, 2]}
+              xAxisLocation={0}
+            />
+          </div>
 
-        {/* real probability */}
-        <div className="m-10 border">
-          <ReactLineChart
-            // data
-            data={simData}
-            getX={(dp) => dp.realProbability}
-            getY={(dp) => (dp.outcome ? 1 : -1)}
-            xAxisLabel="Real probability"
-            yAxisLabel="Outcome"
-            // display
-            height={150}
-            pointOpacity={100 / N_TRIALS}
-            showLines={false}
-            showPoints={true}
-            pointRadius={1}
-            yDomain={[-2, 2]}
-            xAxisLocation={0}
-          />
+          {/* real probability */}
+          <div className="m-10 border col-span-6">
+            <ReactLineChart
+              // data
+              data={simData}
+              getX={(dp) => dp.realProbability}
+              getY={(dp) => (dp.outcome ? 1 : -1)}
+              xAxisLabel="Real probability"
+              yAxisLabel="Outcome"
+              // display
+              height={150}
+              width={400}
+              pointOpacity={10000 / N_TRIALS}
+              showLines={false}
+              showPoints={true}
+              pointRadius={1}
+              yDomain={[-2, 2]}
+              xAxisLocation={0}
+            />
+          </div>
         </div>
 
         {/* point chart */}
